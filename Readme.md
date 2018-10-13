@@ -1,12 +1,12 @@
 ## NAME_OF_YOUR_APP_HERE
 
 ### App Description
-`TODO://` Add app description
+CodePath Week 2, Lab 1: Flashcard App
 
 ### App Walk-though
-`TODO://` Add the URL to your animated app walk-though `gif` in the image tag below. Make sure the gif actually renders and animates when viewing this README. (☝️ Remove this paragraph after after adding gif)
+<img src="Flashcards-lab1.gif" width=200><br>
 
-<img src="" width=200><br>
+GIF URL: http://recordit.co/OTHYTOL0of
 
 `TODO://`
 
