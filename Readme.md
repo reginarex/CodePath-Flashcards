@@ -1,4 +1,4 @@
-## NAME_OF_YOUR_APP_HERE
+## Flashcard
 
 ### App Description
 CodePath Week 2, Lab 1: Flashcard App
