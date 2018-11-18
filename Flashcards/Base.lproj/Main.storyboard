@@ -37,6 +37,14 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fwD-KN-6p7">
+                                        <rect key="frame" x="235" y="231" width="30" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="✏️"/>
+                                        <connections>
+                                            <segue destination="GKa-uD-Dbs" kind="show" identifier="EditSegue" id="hPg-o2-Q7K"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
@@ -77,7 +85,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dhc-Mc-sEa">
                                 <rect key="frame" x="164" y="700" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="+"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" red="0.69411764710000001" green="0.3294117647" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
                                 <connections>
                                     <segue destination="GKa-uD-Dbs" kind="show" id="zaW-cB-gOy"/>
                                 </connections>
@@ -116,14 +126,28 @@
                                 <rect key="frame" x="51" y="117" width="269" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Answer" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pkh-KV-z2e">
                                 <rect key="frame" x="51" y="171" width="269" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Extra Answer One" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pha-9M-Phh">
+                                <rect key="frame" x="51" y="222" width="269" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Extra Answer Two" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JXI-Eg-iek">
+                                <rect key="frame" x="51" y="276" width="269" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
@@ -132,11 +156,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="eFq-xC-zx4">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="fEU-82-XKV">
+                            <color key="tintColor" red="0.69411764710000001" green="0.3294117647" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
                                 <action selector="didTapOnCancel:" destination="bhO-rN-cYt" id="r3F-yF-DF0"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Done" id="qKx-PO-TRq">
+                            <color key="tintColor" red="0.69411764710000001" green="0.3294117647" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
                                 <action selector="didTapOnDone:" destination="bhO-rN-cYt" id="GBb-Fh-JEs"/>
                             </connections>
@@ -144,6 +170,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="answerTextField" destination="Pkh-KV-z2e" id="8Uu-VU-IJc"/>
+                        <outlet property="extraAnswerOne" destination="pha-9M-Phh" id="77X-3a-j8l"/>
+                        <outlet property="extraAnswerTwo" destination="JXI-Eg-iek" id="Sgk-sI-EGi"/>
                         <outlet property="questionTextField" destination="cj0-Se-fg0" id="GBL-b8-eaX"/>
                     </connections>
                 </viewController>
@@ -170,4 +198,7 @@
             <point key="canvasLocation" x="855.20000000000005" y="133.74384236453201"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="hPg-o2-Q7K"/>
+    </inferredMetricsTieBreakers>
 </document>
