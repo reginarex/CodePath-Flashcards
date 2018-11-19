@@ -8,17 +8,47 @@
 
 import UIKit
 
+struct Flashcard {
+    var question: String
+    var answer: String
+    var extraAnswerOne: String
+    var extraAnswerTwo: String
+}
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var backLabel: UILabel!
     @IBOutlet weak var frontLabel: UILabel!
+    
+    // Array to hold our flashcards
+    var flashcards = [Flashcard]()
+    
+    // Current flashcard index
+    var currentIndex = 0
+    
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var btnOptionOne: UIButton!
     @IBOutlet weak var btnOptionTwo: UIButton!
     @IBOutlet weak var btnOptionThree: UIButton!
+    
+    @IBOutlet weak var prevButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        // Read saved flashcards
+        readSavedFlashcards()
+        
+        // Adding  out initial flashcard if needed
+        if flashcards.count == 0 {
+           createBlankFlashcard()
+        } else {
+            updateLabels()
+            updateNextPrevButtons()
+        }
+        
         card.layer.cornerRadius = 20.0
         frontLabel.layer.cornerRadius = 20.0
         frontLabel.clipsToBounds = true
@@ -38,6 +68,10 @@ class ViewController: UIViewController {
         btnOptionThree.layer.cornerRadius = 20
     }
 
+    func createBlankFlashcard() {
+        updateFlashcard(question: "Enter question", answer: "Enter answer", extraAnswerOne: "Extra answer one", extraAnswerTwo: "Extra answer two", isExisting: false)
+    }
+    
     @IBAction func didTapOnFlashcard(_ sender: Any) {
         if(frontLabel.isHidden) {
             frontLabel.isHidden = false
@@ -46,25 +80,173 @@ class ViewController: UIViewController {
             frontLabel.isHidden = true
         }
     }
+    
     @IBAction func didTapBtnOptionOne(_ sender: Any) {
         btnOptionOne.isHidden = true
     }
+    
     @IBAction func didTapBtnOptionTwo(_ sender: Any) {
         frontLabel.isHidden = true
     }
+    
     @IBAction func didTapBtnOptionThree(_ sender: Any) {
         btnOptionThree.isHidden = true
     }
     
-    func updateFlashcard(question: String, answer: String, extraAnswerOne: String, extraAnswerTwo: String) {
-        frontLabel.text = question
-        backLabel.text = answer
+    @IBAction func didTapOnPrev(_ sender: Any) {
         
-        btnOptionOne.setTitle(extraAnswerOne, for: .normal)
-        btnOptionTwo.setTitle(answer, for: .normal)
-        btnOptionThree.setTitle(extraAnswerTwo, for: .normal)
+        // decrement current index
+        currentIndex = currentIndex - 1
         
+        // Update labels
+        updateLabels()
         
+        // Update buttons
+        updateNextPrevButtons()
+    }
+    
+    @IBAction func didTapOnNext(_ sender: Any) {
+        
+        // Increase current index
+        currentIndex = currentIndex + 1
+        
+        // Update labels
+        updateLabels()
+        
+        // Update buttons
+        updateNextPrevButtons()
+    }
+    
+    @IBAction func didTapOnDelete(_ sender: Any) {
+        
+        // Show confirmation
+        let alert = UIAlertController(title: "Delete flashcard", message: "Are you sure you want to delete it?", preferredStyle: .actionSheet)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in self.deleteCurrentFlashcard()
+        }
+        alert.addAction(deleteAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
+    
+    func updateFlashcard(question: String, answer: String, extraAnswerOne: String, extraAnswerTwo: String, isExisting: Bool) {
+        
+        let flashcard = Flashcard(question: question, answer: answer, extraAnswerOne: extraAnswerOne, extraAnswerTwo: extraAnswerTwo)
+        
+        if isExisting {
+            
+            // Replace existing flashcard
+            flashcards[currentIndex] = flashcard
+            
+        } else {
+            
+            // Adding flashcard in the flashcards array
+            flashcards.append(flashcard)
+            
+            //Logging to the console
+            print("😎 Added new flashcard")
+            print("😎 We now have \(flashcards.count) flashcards")
+            
+            // Update current index
+            currentIndex = flashcards.count - 1
+            print("😎 Our current index is \(currentIndex)")
+            
+        }
+        // Update buttons
+        updateNextPrevButtons()
+        
+        // Update labels
+        updateLabels()
+        
+        // Save all flashcards
+        saveAllFlashcardsToDisk()
+    }
+    
+    func updateNextPrevButtons() {
+        
+        // Disable next button if at the end
+        if currentIndex == flashcards.count - 1 {
+            nextButton.isEnabled = false
+        } else {
+            nextButton.isEnabled = true
+        }
+        
+        // Disable prev button if at the end
+        if currentIndex == 0 {
+            prevButton.isEnabled = false
+        } else {
+            prevButton.isEnabled = true
+        }
+    }
+    
+    func deleteCurrentFlashcard() {
+        
+        // Delete current flashcard
+        flashcards.remove(at: currentIndex)
+        
+        // Special case: cgeck if the last card was deleted
+        if currentIndex > flashcards.count - 1 {
+            currentIndex = flashcards.count - 1
+        }
+        
+        // Special case:
+        if currentIndex == -1 {
+            
+            // create blank flashcard
+            createBlankFlashcard()
+            
+        }
+        
+        updateNextPrevButtons()
+        
+        updateLabels()
+        
+        saveAllFlashcardsToDisk()
+    }
+    
+    func updateLabels() {
+        
+        // get current flashcard
+        let currentFlashcard = flashcards[currentIndex]
+        
+        // Update labels
+        frontLabel.text = currentFlashcard.question
+        backLabel.text = currentFlashcard.answer
+        
+        btnOptionOne.setTitle(currentFlashcard.extraAnswerOne, for: .normal)
+        btnOptionTwo.setTitle(currentFlashcard.answer, for: .normal)
+        btnOptionThree.setTitle(currentFlashcard.extraAnswerTwo, for: .normal)
+    }
+    
+    func saveAllFlashcardsToDisk() {
+    
+        // From flashcard array to dictionary array
+        let dictionaryArray = flashcards.map { (card) -> [String: String] in return ["question": card.question, "answer": card.answer, "extraAnswerOne": card.extraAnswerOne, "extraAnswerTwo": card.extraAnswerTwo]
+        }
+        
+        // Save array on siak using UserDefaults
+        UserDefaults.standard.set(dictionaryArray, forKey: "flashcards")
+        
+        // Log
+        print("🎉 Flashcards saved to UserDefaults")
+    }
+    
+    func readSavedFlashcards() {
+      
+        // Read dictionary array from disk (if any)
+        if let dictionaryArray = UserDefaults.standard.array(forKey: "flashcards") as? [[String: String]] {
+            
+            // In here we know for sure we have a dictionary array
+            let savedCards = dictionaryArray.map { dictionary -> Flashcard in return Flashcard(question: dictionary["question"]!, answer: dictionary["answer"]!, extraAnswerOne: dictionary["extraAnswerOne"]!, extraAnswerTwo: dictionary["extraAnswerTwo"]!)
+            }
+            
+            // Put all these cards in out flashcards array
+            flashcards.append(contentsOf: savedCards)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

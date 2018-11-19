@@ -21,6 +21,9 @@ class CreationViewController: UIViewController {
     var initialQuestion: String?
     var initialAnswer: String?
     
+    //see if it's existing
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         questionTextField.text = initialQuestion
@@ -54,12 +57,16 @@ class CreationViewController: UIViewController {
         alert.addAction(okAction)
         
         // Check if question and answers text fields are empty
-        if (questionText == nil || answerText == nil || questionText!.isEmpty || answerText!.isEmpty ) {
+        if (questionText == nil || answerText == nil || questionText!.isEmpty || answerText!.isEmpty) {
             present(alert, animated: true)
         }
         else {
+            var isExisting = false
+            if initialQuestion != nil {
+                isExisting = true
+            }
             // Call the function to update the flashcard
-            flashcardsController.updateFlashcard(question: questionText!, answer: answerText!, extraAnswerOne: extraAnswerOneText!, extraAnswerTwo: extraAnswerTwoText!)
+            flashcardsController.updateFlashcard(question: questionText!, answer: answerText!, extraAnswerOne: extraAnswerOneText!, extraAnswerTwo: extraAnswerTwoText!, isExisting: isExisting)
             
             // Dismiss
             dismiss(animated: true)
